@@ -1,0 +1,29 @@
+---
+- name: Load and enable required kernel modules
+  become: true
+  tasks:
+    - name: Load required kernel modules
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ required_modules }}"
+      when: not ansible_check_mode
+
+    - name: Enable kernel modules at boot time
+      lineinfile:
+        path: /etc/modules
+        line: "{{ item }}"
+      loop: "{{ required_modules }}"
+      state: present
+      when: not ansible_check_mode
+
+- name: Set recommended sysctl settings for Kubernetes
+  become: true
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  loop:
+    - { key: 'net.bridge.bridge-nf-call-ip6tables', value: 1 }
+    - { key: 'net.bridge.bridge-nf-call-iptables', value: 1 }
+    - { key: 'net.ipv4.ip_forward', value: 1 }

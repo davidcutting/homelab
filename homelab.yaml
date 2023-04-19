@@ -1,0 +1,6 @@
+- name: Bootstrap Kubernetes Controllers
+  hosts: kubernetes
+  vars_files:
+    - all.yaml
+  roles:
+    - kubernetes

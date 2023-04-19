@@ -1,0 +1,22 @@
+---
+- name: Add the OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yaml"
+    - "{{ ansible_os_family }}.yaml"
+
+- name: Include Pre-reqs setup task
+  include: pre_setup.yaml
+
+- name: Include task to disable swap
+  include: disable_swap.yaml
+
+- name: Include task to load required kernel modules and sysctl configs
+  include: setup_required_kernel_modules.yaml
+
+- name: Include task to configure containerd container runtime
+  include: setup_containerd.yaml
+  when: container_runtime == "containerd"
+
+- name: Include task to install  k8s packages
+  include: install_k8s_packages.yaml

@@ -1,6 +1,0 @@
-machines:
-  hosts:
-    k8s-controller:
-      ansible_host: 10.10.100.200
-    k8s-worker01:
-      ansible_host: 10.10.100.201

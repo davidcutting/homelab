@@ -1,0 +1,26 @@
+---
+- name: Add Kubernetes repository
+  block:
+    - name: Add Google Cloud GPG key
+      ansible.builtin.get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+    - name: Add Kubernetes apt repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+        state: present
+        filename: kubernetes
+
+- name: Install kubernetes packages
+  ansible.builtin.package:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+
+- name: Enable kubelet service
+  ansible.builtin.service:
+    name: kubelet
+    enabled: yes
