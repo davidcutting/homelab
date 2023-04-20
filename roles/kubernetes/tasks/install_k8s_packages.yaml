@@ -1,5 +1,6 @@
 ---
 - name: Add Kubernetes repository
+  become: true
   block:
     - name: Add Google Cloud GPG key
       ansible.builtin.get_url:
@@ -13,6 +14,7 @@
         filename: kubernetes
 
 - name: Install kubernetes packages
+  become: true
   ansible.builtin.package:
     name:
       - kubelet
@@ -21,6 +23,7 @@
     state: present
 
 - name: Enable kubelet service
+  become: true
   ansible.builtin.service:
     name: kubelet
     enabled: yes

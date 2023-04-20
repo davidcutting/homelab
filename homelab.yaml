@@ -1,6 +1,6 @@
 - name: Bootstrap Kubernetes Controllers
   hosts: kubernetes
   vars_files:
-    - all.yaml
+    - inventory/group_vars/all.yaml
   roles:
     - kubernetes

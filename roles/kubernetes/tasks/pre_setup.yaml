@@ -1,14 +1,14 @@
 ---
-- name: Check that hardware requirements are met
+#- name: Check that hardware requirements are met
 
-- name: Ensure unique MAC address and product_uuid
+#- name: Ensure unique MAC address and product_uuid
 
 - name: Install some packages needed to configure the nodes
+  become: true
   ansible.builtin.package:
     name:
-      - apt-transport-https
       - ca-certificates
       - curl
-      - gpupg-agent
-      - software-properties-common
+      - gnupg2
+      - lsb-release
     state: latest

@@ -1,7 +1,7 @@
 ---
 - name: Load and enable required kernel modules
   become: true
-  tasks:
+  block:
     - name: Load required kernel modules
       modprobe:
         name: "{{ item }}"
@@ -13,8 +13,8 @@
       lineinfile:
         path: /etc/modules
         line: "{{ item }}"
+        state: present
       loop: "{{ required_modules }}"
-      state: present
       when: not ansible_check_mode
 
 - name: Set recommended sysctl settings for Kubernetes
