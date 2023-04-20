@@ -1,0 +1,12 @@
+---
+- name: Include kubeadm init task
+  import_tasks: kubeadm_init.yaml
+
+- name: Include kubeconfig setup task
+  import_tasks: setup_kube_config.yaml
+
+- name: Include Flannel installation task
+  import_tasks: install_flannel.yaml
+
+#- name: Include Calico installation task
+#  import_tasks: install_calico.yaml

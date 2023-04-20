@@ -1,0 +1,16 @@
+---
+- name: Make kube directory in user's home
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/home/{{ ansible_ssh_user }}/.kube"
+
+- name: Copy kubeconfig file to user's home directory
+  become: true
+  copy:
+    dest: /home/{{ ansible_ssh_user }}/.kube/config
+    src: /etc/kubernetes/admin.conf
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    remote_src: true

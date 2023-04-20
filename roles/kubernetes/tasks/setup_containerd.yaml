@@ -33,16 +33,13 @@
 - name: Configure containerd
   become: true
   ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
-#  run_once: true
+  run_once: true
 
-- name: Set cgroup driver as systemd
-  become: true
-  lineinfile:
+- name: Edit containerd config.toml file
+  replace:
     path: /etc/containerd/config.toml
-    regexp: SystemdCgroup = false
-    line: SystemdCgroup = true
-    state: present
-    backup: true
+    regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
+    replace: '\1SystemdCgroup = true\2'
 
 - name: Enable containerd service
   become: true
