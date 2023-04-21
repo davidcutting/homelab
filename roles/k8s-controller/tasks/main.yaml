@@ -1,6 +1,6 @@
 ---
 - name: Include kubeadm init task
-  import_tasks: kubeadm_init.yaml
+  import_tasks: initialize_cluster.yaml
 
 - name: Include kubeconfig setup task
   import_tasks: setup_kube_config.yaml

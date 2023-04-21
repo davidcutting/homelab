@@ -1,0 +1,7 @@
+---
+- name: Bootstrap Kubernetes machines
+  hosts: kubernetes
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - kubernetes

@@ -1,0 +1,50 @@
+---
+- name: Add Kubernetes 
+  become: true
+  block:
+    - name: Add Docker GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/trusted.gpg.d/docker.asc
+        mode: '0644'
+        force: true
+
+    - name: Add Docker apt repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+        filename: docker
+
+- name: Install containerd
+  become: true
+  ansible.builtin.package:
+    name: containerd.io
+    state: latest
+    update_cache: true
+
+- name: Create containerd directories required
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/containerd
+
+- name: Configure containerd
+  become: true
+  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+  run_once: true
+
+- name: Edit containerd config.toml file
+  replace:
+    path: /etc/containerd/config.toml
+    regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
+    replace: '\1SystemdCgroup = true\2'
+
+- name: Enable containerd service
+  become: true
+  ansible.builtin.service:
+    name: containerd
+    state: restarted
+    enabled: true
+    daemon_reload: true

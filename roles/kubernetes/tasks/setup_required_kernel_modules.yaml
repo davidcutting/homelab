@@ -23,6 +23,7 @@
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     state: present
+    reload: true
   loop:
     - { key: 'net.bridge.bridge-nf-call-ip6tables', value: 1 }
     - { key: 'net.bridge.bridge-nf-call-iptables', value: 1 }

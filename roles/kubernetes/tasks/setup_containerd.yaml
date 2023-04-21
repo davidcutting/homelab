@@ -1,50 +1,42 @@
 ---
-- name: Add Kubernetes 
-  become: true
-  block:
-    - name: Add Docker GPG key
-      ansible.builtin.get_url:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        dest: /etc/apt/trusted.gpg.d/docker.asc
-        mode: '0644'
-        force: true
-
-    - name: Add Docker apt repository
-      ansible.builtin.apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-        state: present
-        filename: docker
-
 - name: Install containerd
   become: true
   ansible.builtin.package:
-    name: containerd.io
+    name: containerd
     state: latest
     update_cache: true
 
-- name: Create containerd directories required
-  become: true
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - /etc/containerd
-
 - name: Configure containerd
   become: true
-  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
-  run_once: true
+  block:
+    - name: Create containerd directories required
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /etc/containerd
 
-- name: Edit containerd config.toml file
-  replace:
-    path: /etc/containerd/config.toml
-    regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
-    replace: '\1SystemdCgroup = true\2'
+    - name: Check containerd config file populated
+      ansible.builtin.stat:
+        path: /etc/containerd/config.toml
+      register: containerd_config
 
-- name: Enable containerd service
-  become: true
-  ansible.builtin.service:
-    name: containerd
-    state: restarted
-    enabled: true
-    daemon_reload: true
+    - name: Write containerd default config file
+      ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+      when: not containerd_config.stat.exists
+
+    - name: Edit containerd config.toml file
+      replace:
+        path: /etc/containerd/config.toml
+        regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
+        replace: '\1SystemdCgroup = true\2'
+      register: config_update
+
+    - name: Enable containerd service
+      become: true
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+        enabled: true
+        daemon_reload: true
+      when: config_update.changed

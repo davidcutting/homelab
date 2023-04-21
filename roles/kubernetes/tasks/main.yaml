@@ -1,15 +1,15 @@
 ---
 - name: Include Pre-reqs setup task
-  include_tasks: pre_setup.yaml
+  import_tasks: pre_setup.yaml
 
 - name: Include task to disable swap
-  include_tasks: disable_swap.yaml
+  import_tasks: disable_swap.yaml
 
 - name: Include task to load required kernel modules and sysctl configs
-  include_tasks: setup_required_kernel_modules.yaml
+  import_tasks: setup_required_kernel_modules.yaml
 
 - name: Include task to configure containerd container runtime
-  include_tasks: setup_containerd.yaml
+  import_tasks: setup_containerd.yaml
 
 - name: Include task to install  k8s packages
-  include_tasks: install_k8s_packages.yaml
+  import_tasks: install_k8s_packages.yaml

@@ -1,18 +1,4 @@
 ---
-#- name: Condition server machines
-#  hosts: servers
-#  vars_files:
-#    - inventory/group_vars/all.yaml
-#  roles:
-#    - condition-servers
-
-- name: Bootstrap Kubernetes machines
-  hosts: kubernetes
-  vars_files:
-    - inventory/group_vars/all.yaml
-  roles:
-    - kubernetes
-
 - name: Setup Kubernetes controllers
   hosts: kubernetes_control_plane
   vars_files:
