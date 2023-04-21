@@ -28,12 +28,11 @@
     - name: Edit containerd config.toml file
       replace:
         path: /etc/containerd/config.toml
-        regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
+        regexp: '^(\s*)SystemdCgroup\s*=\s*false(\s*)$'
         replace: '\1SystemdCgroup = true\2'
       register: config_update
 
     - name: Enable containerd service
-      become: true
       ansible.builtin.service:
         name: containerd
         state: restarted

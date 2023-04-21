@@ -1,10 +1,4 @@
 ---
-- name: Enable kubelet service
-  become: true
-  ansible.builtin.service:
-    name: kubelet
-    enabled: yes
-
 - name: Initialize Kubernetes control plane
   become: true
   shell: |
