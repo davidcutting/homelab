@@ -1,0 +1,18 @@
+services:
+
+  caddy:
+    image: caddy/caddy:alpine
+    container_name: caddy
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Detroit
+    volumes:
+      - /srv/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /srv/caddy/config:/config
+      - /srv/caddy/data:/data
+      - /srv/caddy/logs:/var/log/access.log
+    ports:
+      - "443:443"
+      - "80:80"

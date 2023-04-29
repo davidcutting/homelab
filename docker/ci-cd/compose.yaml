@@ -1,0 +1,14 @@
+services:
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /srv/jenkins:/var/jenkins_home
+    ports:
+      - "8345:8080"
+      - "2376:2376"

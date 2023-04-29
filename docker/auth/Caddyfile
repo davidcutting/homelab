@@ -1,0 +1,13 @@
+your_domain_here {
+    redir /home    /home/
+    redir /router  /router/
+    redir /switch  /switch/
+
+    reverse_proxy /home/*    your_ip_here
+    reverse_proxy /router/*  your_ip_here
+    reverse_proxy /switch/*  your_ip_here
+
+    log {
+        output file /var/log/access.log
+    }
+}
