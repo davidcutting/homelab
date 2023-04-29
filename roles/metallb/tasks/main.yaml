@@ -1,0 +1,3 @@
+---
+- name: Include MetalLB install task
+  import_tasks: install_metallb.yaml
