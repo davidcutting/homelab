@@ -15,10 +15,15 @@
         state: present
         filename: docker
 
-- name: Install containerd
+- name: Install Docker
   become: true
   ansible.builtin.package:
-    name: containerd.io
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
     state: latest
     update_cache: true
 

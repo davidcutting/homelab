@@ -1,0 +1,8 @@
+---
+- name: Setup Docker server
+  hosts: docker
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - bootstrap
+    - docker
