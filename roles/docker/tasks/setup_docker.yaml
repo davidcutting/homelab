@@ -22,29 +22,10 @@
     state: latest
     update_cache: true
 
-- name: Create containerd directories required
-  become: true
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - /etc/containerd
-
-- name: Configure containerd
-  become: true
-  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
-  run_once: true
-
-- name: Edit containerd config.toml file
-  replace:
-    path: /etc/containerd/config.toml
-    regexp: '(^|\n)SystemdCgroup\s*=\s*false(\n|$)'
-    replace: '\1SystemdCgroup = true\2'
-
-- name: Enable containerd service
+- name: Enable docker service
   become: true
   ansible.builtin.service:
-    name: containerd
+    name: docker
     state: restarted
     enabled: true
     daemon_reload: true

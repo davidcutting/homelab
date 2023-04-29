@@ -1,0 +1,7 @@
+---
+- name: Setup Kubernetes workers
+  hosts: kubernetes_worker
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - k8s-worker

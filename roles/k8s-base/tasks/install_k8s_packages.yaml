@@ -21,9 +21,3 @@
       - kubeadm
       - kubectl
     state: present
-
-- name: Enable kubelet service
-  become: true
-  ansible.builtin.service:
-    name: kubelet
-    enabled: yes

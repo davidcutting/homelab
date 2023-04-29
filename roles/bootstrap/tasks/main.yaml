@@ -1,0 +1,6 @@
+---
+- name: Include common package install tasks
+  import_tasks: install_common_packages.yaml
+
+- name: Include task to disable swap
+  import_tasks: disable_swap.yaml

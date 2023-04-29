@@ -10,5 +10,4 @@
       - ca-certificates
       - curl
       - gnupg2
-      - lsb-release
     state: latest

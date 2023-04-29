@@ -1,0 +1,3 @@
+---
+- name: Include kubeadm join task
+  import_tasks: join_cluster.yaml

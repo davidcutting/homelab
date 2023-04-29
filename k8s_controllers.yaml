@@ -1,0 +1,7 @@
+---
+- name: Setup Kubernetes controllers
+  hosts: kubernetes_control_plane
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - k8s-controller

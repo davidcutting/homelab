@@ -1,10 +1,4 @@
 ---
-- name: Include Pre-reqs setup task
-  import_tasks: pre_setup.yaml
-
-- name: Include task to disable swap
-  import_tasks: disable_swap.yaml
-
 - name: Include task to load required kernel modules and sysctl configs
   import_tasks: setup_required_kernel_modules.yaml
 

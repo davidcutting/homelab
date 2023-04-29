@@ -1,0 +1,16 @@
+---
+- name: Bootstrap Kubernetes machines
+  hosts: kubernetes
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - bootstrap
+    - k8s-base
+
+- name: Bootstrap Docker machines
+  hosts: docker
+  vars_files:
+    - inventory/group_vars/all.yaml
+  roles:
+    - bootstrap
+    - docker

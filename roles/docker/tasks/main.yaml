@@ -1,0 +1,3 @@
+---
+- name: Include task to configure docker
+  import_tasks: setup_docker.yaml

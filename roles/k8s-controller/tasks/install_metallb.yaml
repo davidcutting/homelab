@@ -1,0 +1,27 @@
+---
+- name: Install Metal load balancer
+  become: true
+  block:
+    - name: Check if strict ARP required
+      shell: |
+        kubectl get configmap kube-proxy -n kube-system -o yaml | \
+        sed -e "s/strictARP: false/strictARP: true/" | \
+        kubectl diff -f - -n kube-system
+      args:
+        executable: /bin/bash
+      register: strict_arp
+    
+    - name: Set strict ARP if necessary
+      shell: |
+        kubectl get configmap kube-proxy -n kube-system -o yaml | \
+        sed -e "s/strictARP: false/strictARP: true/" | \
+        kubectl apply -f - -n kube-system
+      args:
+        executable: /bin/bash
+      when: strict_arp
+
+    - name: Install Metal load balancer
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
+      args:
+        executable: /bin/bash
